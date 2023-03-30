@@ -2,14 +2,14 @@ import { Button, TextField } from "@mui/material";
 
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const LocationDecider = (props: { setFlights: any; flights: any }) => {
-  const { setFlights, flights } = props;
+const LocationDecider = (props: { setShowFlights: any; showFlights: any }) => {
+  const { showFlights, setShowFlights } = props;
 
-  const showFlights = () => {
-    if (flights) {
-      setFlights(false);
+  const displayFlights = () => {
+    if (showFlights) {
+      setShowFlights(false);
     } else {
-      setFlights(true);
+      setShowFlights(true);
     }
   };
 
@@ -20,21 +20,23 @@ const LocationDecider = (props: { setFlights: any; flights: any }) => {
         <TextField
           sx={{ marginRight: "24px" }}
           id="outlined-basic"
-          label="Outlined"
           variant="outlined"
+          disabled
+          value={"Izmir"}
         />
         <ArrowForwardIcon fontSize="large" />
         <TextField
           sx={{ marginLeft: "24px" }}
           id="outlined-basic"
-          label="Outlined"
           variant="outlined"
+          disabled
+          value={"Istanbul"}
         />
         <Button
           size="large"
           sx={{ marginLeft: "36px" }}
           variant="contained"
-          onClick={showFlights}
+          onClick={displayFlights}
         >
           SHOW FLIGHTS
         </Button>
