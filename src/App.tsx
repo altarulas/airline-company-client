@@ -48,7 +48,26 @@ const App = () => {
   }, [refreshFlightList]);
 
   return (
-    <div style={{ padding: "24px" }}>
+    <div style={{ padding: "28px" }}>
+      <div style={{ border: "1px solid black", padding: "20px" }}>
+        <div style={{ marginBottom: "20px", fontSize: "20px" }}>Test Users</div>
+        <div style={{ display: "flex" }}>
+          <div style={{ border: "1px solid black", padding: "20px" }}>
+            <span style={{ margin: "0px 20px" }}>username: adam123</span>
+            <span style={{ margin: "0px 20px" }}>username: john123</span>
+            <span style={{ margin: "0px 20px" }}>username: lisa123</span>
+          </div>
+          <span
+            style={{
+              margin: "0px 20px",
+              border: "1px solid black",
+              padding: "20px",
+            }}
+          >
+            password: 123asd123
+          </span>
+        </div>
+      </div>
       <Location setSeatsNum={setSeatsNum} />
 
       <Flights

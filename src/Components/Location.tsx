@@ -23,24 +23,31 @@ const Location = (props: { setSeatsNum: any }) => {
           disabled
           value={"Istanbul"}
         />
-        <TextField
-          sx={{ marginLeft: "24px" }}
-          id="outlined-basic"
-          variant="outlined"
-          label={"Seats"}
-          inputProps={{
-            type: "number",
-            min: 0,
-            max: 5,
-            onChange: (event) => {
-              const value = parseInt((event.target as HTMLInputElement).value);
-              if (value < 0) {
-                (event.target as HTMLInputElement).value = "0";
-              }
-              setSeatsNum(value);
-            },
-          }}
-        />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <TextField
+            sx={{ marginLeft: "24px" }}
+            id="outlined-basic"
+            variant="outlined"
+            label={"Seats"}
+            inputProps={{
+              type: "number",
+              min: 0,
+              max: 5,
+              onChange: (event) => {
+                const value = parseInt(
+                  (event.target as HTMLInputElement).value
+                );
+                if (value < 0) {
+                  (event.target as HTMLInputElement).value = "0";
+                }
+                setSeatsNum(value);
+              },
+            }}
+          />
+          <span style={{ marginLeft: "20px", fontSize: "20px" }}>
+            (To see the flights, increase seat number)
+          </span>
+        </div>
       </div>
     </div>
   );
