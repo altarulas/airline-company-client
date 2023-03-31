@@ -9,7 +9,6 @@ import axios from "axios";
 const App = () => {
   const [seatsNum, setSeatsNum] = useState(0);
 
-  const [showFlights, setShowFlights] = useState(false);
   const [flightList, setFlightList] = useState([]);
   const [filteredFlight, setFilteredFlight] = useState([]);
   const [refreshFlightList, setRefreshFlightList] = useState(false);
@@ -25,26 +24,30 @@ const App = () => {
 
   // setting flights
   useEffect(() => {
-    axios
-      .get("http://localhost:3002/api/v1/flights")
-      .then((response) => {
-        setFlightList(response.data.results);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (process.env.REACT_APP_FLIGHT_END_POINT) {
+      axios
+        .get(process.env.REACT_APP_FLIGHT_END_POINT)
+        .then((response) => {
+          setFlightList(response.data.results);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, []);
 
   // setting flights after reservation
   useEffect(() => {
-    axios
-      .get("http://localhost:3002/api/v1/flights")
-      .then((response) => {
-        setFlightList(response.data.results);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (process.env.REACT_APP_FLIGHT_END_POINT) {
+      axios
+        .get(process.env.REACT_APP_FLIGHT_END_POINT)
+        .then((response) => {
+          setFlightList(response.data.results);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [refreshFlightList]);
 
   return (

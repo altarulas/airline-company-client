@@ -71,23 +71,25 @@ export default function AuthPopper(props: {
     };
 
     try {
-      await axios
-        .post("http://localhost:3002/api/v1/users/token", userInfo)
-        .then((response) => setToken(response.data.token))
-        .catch(() => {
-          setMessage("Information's are not correct");
-          setLoading(false);
-        });
+      if (process.env.REACT_APP_JWT_TOKEN_END_POINT) {
+        await axios
+          .post(process.env.REACT_APP_JWT_TOKEN_END_POINT, userInfo)
+          .then((response) => setToken(response.data.token))
+          .catch(() => {
+            setMessage("Information's are not correct");
+            setLoading(false);
+          });
+      }
     } catch (error) {
       console.log("auth handler error: ", error);
     }
   };
 
   useEffect(() => {
-    if (token) {
+    if (token && process.env.REACT_APP_USERS_END_POINT) {
       const verifyToken = { headers: { Authorization: token } };
       axios
-        .get("http://localhost:3002/api/v1/users", verifyToken)
+        .get(process.env.REACT_APP_USERS_END_POINT, verifyToken)
         .then((response) => setUsers(response.data))
         .catch((error) => console.log("Error fetching user data:", error));
     }
@@ -120,31 +122,35 @@ export default function AuthPopper(props: {
 
       const verifyToken = { headers: { Authorization: token } };
       try {
-        axios
-          .post(
-            "http://localhost:3002/api/v1/reservations",
-            goingData,
-            verifyToken
-          )
-          .then(() => {
-            const verifyToken = { headers: { Authorization: token } };
-            axios
-              .get("http://localhost:3002/api/v1/reservations", verifyToken)
-              .then((response) => setReservations(response.data))
-              .catch((error) =>
-                console.log("Error getting reservation: ", error)
-              );
-            setPopper(false);
-            setInputs({ username: "", password: "" });
-            setToken("");
-            setLoading(false);
-            setMessage("Reservation made successfully");
-          })
-          .catch((error) => {
-            console.log("Error creating reservation:", error);
-            setLoading(false);
-            setMessage(false);
-          });
+        if (process.env.REACT_APP_RESERVATION_END_POINT) {
+          axios
+            .post(
+              process.env.REACT_APP_RESERVATION_END_POINT,
+              goingData,
+              verifyToken
+            )
+            .then(() => {
+              const verifyToken = { headers: { Authorization: token } };
+              if (process.env.REACT_APP_RESERVATION_END_POINT) {
+                axios
+                  .get(process.env.REACT_APP_RESERVATION_END_POINT, verifyToken)
+                  .then((response) => setReservations(response.data))
+                  .catch((error) =>
+                    console.log("Error getting reservation: ", error)
+                  );
+              }
+              setPopper(false);
+              setInputs({ username: "", password: "" });
+              setToken("");
+              setLoading(false);
+              setMessage("Reservation made successfully");
+            })
+            .catch((error) => {
+              console.log("Error creating reservation:", error);
+              setLoading(false);
+              setMessage(false);
+            });
+        }
 
         const newSeatNumber = String(
           filteredFlight[0].availableSeats - seatsNum
@@ -160,14 +166,21 @@ export default function AuthPopper(props: {
           availableSeats: newSeatNumber,
         };
 
-        axios
-          .put(
-            `http://localhost:3002/api/v1/flights/${filteredFlight[0]._id}`,
-            decreaseSeatNumber,
-            verifyToken
-          )
-          .then(() => setRefreshFlightList(true))
-          .catch((error) => console.log(error));
+        if (process.env.REACT_APP_FLIGHT_END_POINT) {
+          axios
+            .put(
+              `${process.env.REACT_APP_FLIGHT_END_POINT}/${filteredFlight[0]._id}`,
+              decreaseSeatNumber,
+              verifyToken
+            )
+            .then(() => {
+              setRefreshFlightList(true);
+              setTimeout(() => {
+                setRefreshFlightList(false);
+              }, 1500);
+            })
+            .catch((error) => console.log(error));
+        }
       } catch (error) {
         console.log(error);
       }
