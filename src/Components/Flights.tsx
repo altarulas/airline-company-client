@@ -37,6 +37,7 @@ export default function Flights(props: {
       );
       setFilteredFlight(filteredById);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flightList, seatsNum, flightId]);
 
   return (

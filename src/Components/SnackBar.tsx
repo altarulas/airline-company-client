@@ -12,6 +12,7 @@ const SnackBar = (props: { message: any; setMessage: any }) => {
       setMessage("");
     }, 2000);
     return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [message]);
 
   return (

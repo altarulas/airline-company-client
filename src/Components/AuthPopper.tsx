@@ -103,6 +103,7 @@ export default function AuthPopper(props: {
       );
       setCurrentUser(filteredUser);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users]);
 
   useEffect(() => {
@@ -185,6 +186,7 @@ export default function AuthPopper(props: {
         console.log(error);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const handleClose = () => {
