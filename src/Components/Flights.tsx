@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Button } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -7,23 +9,52 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-export default function FlightTable(props: {
+export default function Flights(props: {
+  seatsNum: any;
+  flightList: any;
+  setFilteredFlight: any;
   setPopper: any;
   showFlights: any;
-  set_id: any;
-  flightList: any;
+  refreshFlightList: any;
 }) {
-  const { setPopper, showFlights, set_id, flightList } = props;
+  const {
+    seatsNum,
+    flightList,
+    setFilteredFlight,
+    setPopper,
+    showFlights,
+    refreshFlightList,
+  } = props;
+
+  const [flightId, setFlightId] = useState("");
+  const [filteredBySeats, setFilteredBySeats] = useState([]);
 
   const displayPopper = (flightId: any) => {
     setPopper(true);
-    set_id(flightId);
+    setFlightId(flightId);
   };
+
+  useEffect(() => {
+    if (flightList.length > 0 && seatsNum) {
+      const filteredBySeats = flightList.filter(
+        (flight: any) => flight.availableSeats === String(seatsNum)
+      );
+      setFilteredBySeats(filteredBySeats);
+
+      const filteredById = flightList.filter(
+        (flight: any) => flight._id === flightId
+      );
+      setFilteredFlight(filteredById);
+    }
+  }, [flightList, seatsNum, flightId]);
 
   return (
     <>
       {showFlights && (
         <TableContainer component={Paper}>
+          <div style={{ fontSize: "28px", marginBottom: "24px" }}>
+            Flight List
+          </div>
           <Table
             sx={{ minWidth: 650, background: "#dadada" }}
             aria-label="simple table"
@@ -39,7 +70,7 @@ export default function FlightTable(props: {
               </TableRow>
             </TableHead>
             <TableBody>
-              {flightList.map((flight: any) => (
+              {filteredBySeats.map((flight: any) => (
                 <TableRow
                   key={flight._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

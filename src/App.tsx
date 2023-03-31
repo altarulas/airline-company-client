@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
 
-import AuthPopper from "./AuthPopper";
-import Flights from "./Flights";
-import Loading from "./Loading";
-import LocationDecider from "./LocationDecider";
-import ReservationTable from "./Reservation";
+import AuthPopper from "./Components/AuthPopper";
+import Flights from "./Components/Flights";
+import Location from "./Components/Location";
+import Reservation from "./Components/Reservation";
 import axios from "axios";
 
 const App = () => {
-  const [popper, setPopper] = useState(false);
+  const [seatsNum, setSeatsNum] = useState(0);
+
   const [showFlights, setShowFlights] = useState(false);
-  const [reservations, setReservations] = useState([]);
-
-  const [showReservation, setShowReservations] = useState(false);
-
-  const [fresher, setFresher] = useState(false);
-
   const [flightList, setFlightList] = useState([]);
-  const [_id, set_id] = useState("");
+  const [filteredFlight, setFilteredFlight] = useState([]);
+  const [refreshFlightList, setRefreshFlightList] = useState(false);
 
+  const [popper, setPopper] = useState(false);
   const [token, setToken] = useState("");
 
+  const [currentUser, setCurrentUser] = useState([]);
+  const [reservations, setReservations] = useState([]);
+
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   // setting flights
   useEffect(() => {
@@ -35,38 +35,53 @@ const App = () => {
       });
   }, []);
 
+  // setting flights after reservation
+  useEffect(() => {
+    axios
+      .get("http://localhost:3002/api/v1/flights")
+      .then((response) => {
+        setFlightList(response.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [refreshFlightList]);
+
   return (
     <div style={{ padding: "24px" }}>
-      <LocationDecider
+      <Location
         showFlights={showFlights}
         setShowFlights={setShowFlights}
+        setSeatsNum={setSeatsNum}
       />
 
       <Flights
-        setPopper={setPopper}
-        showFlights={showFlights}
+        seatsNum={seatsNum}
         flightList={flightList}
-        set_id={set_id}
+        setFilteredFlight={setFilteredFlight}
+        showFlights={showFlights}
+        setPopper={setPopper}
+        refreshFlightList={refreshFlightList}
       />
+
+      <Reservation currentUser={currentUser} reservations={reservations} />
 
       <AuthPopper
-        setLoading={setLoading}
+        token={token}
+        setToken={setToken}
+        filteredFlight={filteredFlight}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
         setReservations={setReservations}
-        setShowReservations={setShowReservations}
+        seatsNum={seatsNum}
         popper={popper}
         setPopper={setPopper}
-        setToken={setToken}
-        token={token}
-        flightList={flightList}
-        _id={_id}
+        loading={loading}
+        setLoading={setLoading}
+        setMessage={setMessage}
+        message={message}
+        setRefreshFlightList={setRefreshFlightList}
       />
-
-      <ReservationTable
-        reservations={reservations}
-        showReservation={showReservation}
-      />
-
-      <Loading loading={loading} />
     </div>
   );
 };

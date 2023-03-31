@@ -2,8 +2,12 @@ import { Button, TextField } from "@mui/material";
 
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const LocationDecider = (props: { setShowFlights: any; showFlights: any }) => {
-  const { showFlights, setShowFlights } = props;
+const Location = (props: {
+  setShowFlights: any;
+  showFlights: any;
+  setSeatsNum: any;
+}) => {
+  const { showFlights, setShowFlights, setSeatsNum } = props;
 
   const displayFlights = () => {
     if (showFlights) {
@@ -32,6 +36,24 @@ const LocationDecider = (props: { setShowFlights: any; showFlights: any }) => {
           disabled
           value={"Istanbul"}
         />
+        <TextField
+          sx={{ marginLeft: "24px" }}
+          id="outlined-basic"
+          variant="outlined"
+          label={"Seats"}
+          inputProps={{
+            type: "number",
+            min: 0,
+            max: 6,
+            onChange: (event) => {
+              const value = parseInt((event.target as HTMLInputElement).value);
+              if (value < 0) {
+                (event.target as HTMLInputElement).value = "0";
+              }
+              setSeatsNum(value);
+            },
+          }}
+        />
         <Button
           size="large"
           sx={{ marginLeft: "36px" }}
@@ -45,4 +67,4 @@ const LocationDecider = (props: { setShowFlights: any; showFlights: any }) => {
   );
 };
 
-export default LocationDecider;
+export default Location;
