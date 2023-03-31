@@ -49,19 +49,13 @@ const App = () => {
 
   return (
     <div style={{ padding: "24px" }}>
-      <Location
-        showFlights={showFlights}
-        setShowFlights={setShowFlights}
-        setSeatsNum={setSeatsNum}
-      />
+      <Location setSeatsNum={setSeatsNum} />
 
       <Flights
         seatsNum={seatsNum}
         flightList={flightList}
         setFilteredFlight={setFilteredFlight}
-        showFlights={showFlights}
         setPopper={setPopper}
-        refreshFlightList={refreshFlightList}
       />
 
       <Reservation currentUser={currentUser} reservations={reservations} />

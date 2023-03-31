@@ -14,17 +14,8 @@ export default function Flights(props: {
   flightList: any;
   setFilteredFlight: any;
   setPopper: any;
-  showFlights: any;
-  refreshFlightList: any;
 }) {
-  const {
-    seatsNum,
-    flightList,
-    setFilteredFlight,
-    setPopper,
-    showFlights,
-    refreshFlightList,
-  } = props;
+  const { seatsNum, flightList, setFilteredFlight, setPopper } = props;
 
   const [flightId, setFlightId] = useState("");
   const [filteredBySeats, setFilteredBySeats] = useState([]);
@@ -50,56 +41,54 @@ export default function Flights(props: {
 
   return (
     <>
-      {showFlights && (
-        <TableContainer component={Paper}>
-          <div style={{ fontSize: "28px", marginBottom: "24px" }}>
-            Flight List
-          </div>
-          <Table
-            sx={{ minWidth: 650, background: "#dadada" }}
-            aria-label="simple table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell>Flight No</TableCell>
-                <TableCell align="center">From</TableCell>
-                <TableCell align="center">To</TableCell>
-                <TableCell align="center">Date</TableCell>
-                <TableCell align="center">Price</TableCell>
-                <TableCell align="center">Available Seats</TableCell>
+      <TableContainer component={Paper}>
+        <div style={{ fontSize: "28px", marginBottom: "24px" }}>
+          Flight List
+        </div>
+        <Table
+          sx={{ minWidth: 650, background: "#dadada" }}
+          aria-label="simple table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell>Flight No</TableCell>
+              <TableCell align="center">From</TableCell>
+              <TableCell align="center">To</TableCell>
+              <TableCell align="center">Date</TableCell>
+              <TableCell align="center">Price</TableCell>
+              <TableCell align="center">Available Seats</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredBySeats.map((flight: any) => (
+              <TableRow
+                key={flight._id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="flight">
+                  {flight.flightNo}
+                </TableCell>
+                <TableCell align="center">{flight.from}</TableCell>
+                <TableCell align="center">{flight.to}</TableCell>
+                <TableCell align="center">{flight.date}</TableCell>
+                <TableCell align="center">{flight.price}$</TableCell>
+                <TableCell align="center">{flight.availableSeats}</TableCell>
+                <TableCell align="center">
+                  <Button
+                    color="success"
+                    onClick={() => {
+                      displayPopper(flight._id);
+                    }}
+                    variant="contained"
+                  >
+                    BUY TICKET
+                  </Button>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredBySeats.map((flight: any) => (
-                <TableRow
-                  key={flight._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="flight">
-                    {flight.flightNo}
-                  </TableCell>
-                  <TableCell align="center">{flight.from}</TableCell>
-                  <TableCell align="center">{flight.to}</TableCell>
-                  <TableCell align="center">{flight.date}</TableCell>
-                  <TableCell align="center">{flight.price}$</TableCell>
-                  <TableCell align="center">{flight.availableSeats}</TableCell>
-                  <TableCell align="center">
-                    <Button
-                      color="success"
-                      onClick={() => {
-                        displayPopper(flight._id);
-                      }}
-                      variant="contained"
-                    >
-                      BUY TICKET
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }
