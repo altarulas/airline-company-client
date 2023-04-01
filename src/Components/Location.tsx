@@ -31,7 +31,7 @@ const Location = (props: { setSeatsNum: any }) => {
             label={"Seats"}
             inputProps={{
               type: "number",
-              min: 0,
+              min: 1,
               max: 5,
               onChange: (event) => {
                 const value = parseInt(
