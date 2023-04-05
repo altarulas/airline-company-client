@@ -45,7 +45,8 @@ const Location = (props: { setSeatsNum: any }) => {
             }}
           />
           <span style={{ marginLeft: "20px", fontSize: "20px" }}>
-            (To see the flights, increase seat number)
+            (To see the flights, increase seat number. It may take up to 10
+            seconds to receive a response from the server. )
           </span>
         </div>
       </div>
